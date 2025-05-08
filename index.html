@@ -33,16 +33,11 @@
         <p>I'm especially interested in detection engineering, incident response, and real-world adversary tactics. This portfolio highlights my journey, blog posts, and projects.</p>
     </section>
 
-    <section>
-        <h2>📖 Featured Blog Posts</h2>
-        <ul>
-            <li><a href="https://myitjourney12.wordpress.com/2025/04/15/letsdefend-case-1-soc335-cve-2024-49138-exploitation-detected-lolbin-and-rce/">🔗 LetsDefend Case Study #1: CVE-2024-49138 Exploitation (SOC335) — LOLBins, RDP and Sticky Keys Abuse</a></li>
-            <li><a href="https://myitjourney12.wordpress.com/2025/03/24/c-learning-session-2/">🔗 C Learning Session #2: Memory Management and Pointers</a></li>
-            <li><a href="https://myitjourney12.wordpress.com/2025/03/21/c-learning-session-1/">🔗 C Learning Session #1: Introduction to C Programming</a></li>
-            <li><a href="https://myitjourney12.wordpress.com/2025/03/17/top-cyber-security-trends-in-2025/">🔗 Top Cyber Security Trends in 2025</a></li>
-            <li><a href="https://myitjourney12.wordpress.com/2025/03/05/burnout-and-procrastrination/">🔗 Burnout and Procrastination in the Cybersecurity Field</a></li>
-        </ul>
-    </section>
+   <section>
+    <h2>📖 Latest Blog Posts</h2>
+    <ul id="blog-feed">Loading posts...</ul>
+</section>
+
 
     <section>
         <h2>🧪 Projects & Labs</h2>
@@ -91,6 +86,24 @@
     <footer>
         <p>© 2025 Burakhan Narlioglu</p>
     </footer>
+<script>
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://myitjourney12.wordpress.com/feed/")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("blog-feed");
+      container.innerHTML = ""; // Clear "Loading..."
+      data.items.slice(0, 5).forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${item.link}" target="_blank">🔗 ${item.title}</a>`;
+        container.appendChild(li);
+      });
+    })
+    .catch(err => {
+      document.getElementById("blog-feed").innerHTML = "Failed to load blog posts.";
+      console.error("Failed to load RSS feed", err);
+    });
+</script>
+
 </body>
 </html>
 
