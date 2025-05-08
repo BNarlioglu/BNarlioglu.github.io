@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,12 +34,12 @@
         <p>I'm especially interested in detection engineering, incident response, and real-world adversary tactics. This portfolio highlights my journey, blog posts, and projects.</p>
     </section>
 
-<section>
-    <h2>📖 Latest Blog Posts</h2>
-    <ul id="blog-feed">Loading posts...</ul>
-</section>
-
-
+    <section>
+        <h2>📖 Featured Blog Posts</h2>
+        <ul id="blog-feed">
+            <!-- Blog posts will be automatically inserted here -->
+        </ul>
+    </section>
 
     <section>
         <h2>🧪 Projects & Labs</h2>
@@ -92,13 +92,17 @@
 
     <!-- JavaScript for Auto-Update -->
     <script>
-        // RSS Feed URL (WordPress Blog)
-        const rssFeedUrl = 'https://myitjourney12.wordpress.com/feed/';
+        const rssFeedUrl = 'https://myitjourney12.wordpress.com/feed/'; // Your WordPress RSS feed URL
 
         // Function to fetch and display the RSS feed
         function fetchRSS() {
             fetch(rssFeedUrl)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
                 .then(str => {
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(str, "text/xml");
@@ -108,29 +112,25 @@
                     blogFeed.innerHTML = ''; // Clear existing posts
 
                     if (items.length === 0) {
-                        blogFeed.innerHTML = "<li>No blog posts available at the moment.</li>";
-                        return;
+                        blogFeed.innerHTML = 'No blog posts available at the moment.';
+                    } else {
+                        items.forEach(item => {
+                            const title = item.querySelector('title').textContent;
+                            const link = item.querySelector('link').textContent;
+
+                            // Create list item for each blog post
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = link;
+                            a.textContent = title;
+                            li.appendChild(a);
+                            blogFeed.appendChild(li);
+                        });
                     }
-
-                    items.forEach(item => {
-                        const title = item.querySelector('title').textContent;
-                        const link = item.querySelector('link').textContent;
-                        const description = item.querySelector('description').textContent;
-                        const pubDate = item.querySelector('pubDate').textContent;
-
-                        // Create list item for each blog post
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                            <a href="${link}" target="_blank">${title}</a><br>
-                            <small>Posted on: ${pubDate}</small><br>
-                            <p>${description}</p>
-                        `;
-                        blogFeed.appendChild(li);
-                    });
                 })
                 .catch(error => {
                     const blogFeed = document.getElementById('blog-feed');
-                    blogFeed.innerHTML = "<li>Failed to load blog posts. Please try again later.</li>";
+                    blogFeed.innerHTML = 'Failed to load blog posts. Please try again later.';
                     console.error('Error fetching RSS feed:', error);
                 });
         }
@@ -138,8 +138,8 @@
         // Fetch the RSS feed on page load
         window.onload = fetchRSS;
 
-        // Set interval to auto-refresh the blog feed every 10 minutes (600000 milliseconds)
-        setInterval(fetchRSS, 600000); // 600000 ms = 10 minutes
+        // Set an interval to refresh the blog feed every 5 minutes (300,000 milliseconds)
+        setInterval(fetchRSS, 300000);  // 300000 ms = 5 minutes
     </script>
 </body>
 </html>
