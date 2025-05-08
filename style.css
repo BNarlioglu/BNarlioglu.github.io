@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    color: #333;
 }
 
 header {
@@ -23,14 +24,27 @@ header p {
 }
 
 section {
+    max-width: 800px;
+    margin: 40px auto;
     padding: 20px;
-    margin: 20px;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+section h1,
+section h2,
+section h3 {
+    text-align: center;
 }
 
 section h2 {
     color: #333;
+    margin-bottom: 10px;
+}
+
+ul {
+    padding-left: 20px;
 }
 
 a {
@@ -44,13 +58,16 @@ a:hover {
 
 footer {
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     background: #333;
     color: #fff;
-    position: fixed;
+    margin-top: 40px;
+    border-top: 2px solid #555;
+    position: relative;
     bottom: 0;
     width: 100%;
 }
+
 #blog-feed {
     list-style: none;
     padding: 0;
@@ -80,4 +97,24 @@ footer {
 
 #blog-feed a:hover {
     text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    section {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    #blog-feed li {
+        font-size: 0.95em;
+    }
 }
