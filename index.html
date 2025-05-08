@@ -33,11 +33,12 @@
         <p>I'm especially interested in detection engineering, incident response, and real-world adversary tactics. This portfolio highlights my journey, blog posts, and projects.</p>
     </section>
 
-   <section>
-    <h2>📖 Latest Blog Posts</h2>
-    <ul id="blog-feed">Loading posts...</ul>
-</section>
-
+    <section>
+        <h2>📖 Featured Blog Posts</h2>
+        <ul id="blog-feed">
+            <!-- Blog posts will be automatically inserted here -->
+        </ul>
+    </section>
 
     <section>
         <h2>🧪 Projects & Labs</h2>
@@ -58,7 +59,6 @@
         <h2>🗾 Certifications & Learning</h2>
         <ul>
             <li>🟢 CompTIA Security+</li>
-             <li>🟢 ISO/IEC 27001 and ISO 31000</li>
             <li>📚 Currently studying for <strong>CompTIA Cybersecurity Analyst+ (CySA+)</strong></li>
             <li>📍 Next target: <strong>Microsoft Certified: Security, Compliance, and Identity Fundamentals (SC-900)</strong></li>
         </ul>
@@ -87,24 +87,43 @@
     <footer>
         <p>© 2025 Burakhan Narlioglu</p>
     </footer>
-<script>
-  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://myitjourney12.wordpress.com/feed/")
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("blog-feed");
-      container.innerHTML = ""; // Clear "Loading..."
-      data.items.slice(0, 5).forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="${item.link}" target="_blank">🔗 ${item.title}</a>`;
-        container.appendChild(li);
-      });
-    })
-    .catch(err => {
-      document.getElementById("blog-feed").innerHTML = "Failed to load blog posts.";
-      console.error("Failed to load RSS feed", err);
-    });
-</script>
 
+    <!-- JavaScript for Auto-Update -->
+    <script>
+        // RSS Feed URL (WordPress Blog)
+        const rssFeedUrl = 'https://myitjourney12.wordpress.com/feed/';
+
+        // Function to fetch and display the RSS feed
+        function fetchRSS() {
+            fetch(rssFeedUrl)
+                .then(response => response.text())
+                .then(str => {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(str, "text/xml");
+                    
+                    const items = xmlDoc.querySelectorAll('item');
+                    const blogFeed = document.getElementById('blog-feed');
+                    blogFeed.innerHTML = ''; // Clear existing posts
+
+                    items.forEach(item => {
+                        const title = item.querySelector('title').textContent;
+                        const link = item.querySelector('link').textContent;
+                        const description = item.querySelector('description').textContent;
+
+                        // Create list item for each blog post
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = link;
+                        a.textContent = title;
+                        li.appendChild(a);
+                        blogFeed.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching RSS feed:', error));
+        }
+
+        // Fetch the RSS feed on page load
+        window.onload = fetchRSS;
+    </script>
 </body>
 </html>
-
