@@ -36,60 +36,9 @@
 
 <section>
     <h2>📖 Latest Blog Posts</h2>
-    <ul id="blog-feed">Loading posts...</ul> <!-- Show loading message initially -->
+    <ul id="blog-feed">Loading posts...</ul>
 </section>
 
-    <script>
-    // RSS Feed URL (WordPress Blog)
-    const rssFeedUrl = 'https://myitjourney12.wordpress.com/feed/'; // Your WordPress RSS feed URL
-
-    // Function to fetch and display the RSS feed
-    function fetchRSS() {
-        fetch(rssFeedUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text(); // Get the response as text (XML format)
-            })
-            .then(str => {
-                const parser = new DOMParser();  // Parse the text into XML
-                const xmlDoc = parser.parseFromString(str, "text/xml");
-                
-                const items = xmlDoc.querySelectorAll('item');  // Get all blog post items
-                const blogFeed = document.getElementById('blog-feed');
-                blogFeed.innerHTML = '';  // Clear any existing content
-
-                if (items.length === 0) {  // If no posts are available
-                    blogFeed.innerHTML = 'No blog posts available at the moment.';
-                } else {
-                    items.forEach(item => {
-                        const title = item.querySelector('title').textContent;  // Get the post title
-                        const link = item.querySelector('link').textContent;    // Get the post link
-
-                        // Create a new list item for each blog post
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = link;
-                        a.textContent = title;  // Set the title as the link text
-                        li.appendChild(a);
-                        blogFeed.appendChild(li);  // Add the list item to the blog feed
-                    });
-                }
-            })
-            .catch(error => {  // Handle any errors during the fetch process
-                const blogFeed = document.getElementById('blog-feed');
-                blogFeed.innerHTML = 'Failed to load blog posts. Please try again later.';  // Show error message
-                console.error('Error fetching RSS feed:', error);  // Log the error in the console
-            });
-    }
-
-    // Fetch the RSS feed when the page loads
-    window.onload = fetchRSS;
-
-    // Set an interval to refresh the blog feed every 5 minutes (300,000 milliseconds)
-    setInterval(fetchRSS, 300000);  // 300000 ms = 5 minutes
-</script>
 
 
     <section>
